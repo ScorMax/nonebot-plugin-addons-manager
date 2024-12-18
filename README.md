@@ -11,8 +11,8 @@
 _✨ 求生之路addons文件夹Q群管理插件 ✨_
 
 
-<a href="LICENSE">
-    <img src="https://img.shields.io/github/license/owner/nonebot-plugin-addons-manager.svg" alt="license">
+<a href="./LICENSE">
+    <img src="https://img.shields.io/github/license/ScorMax/nonebot-plugin-addons-manager.svg" alt="license">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-addons-manager">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-addons-manager.svg" alt="pypi">
