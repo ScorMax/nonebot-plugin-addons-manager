@@ -1,12 +1,12 @@
 import nonebot
 from .config import Config
-from .model import URLFile, IDFile
 import re
 from pathlib import Path
-from typing import Optional, List
+from typing import  List
 from nonebot import on_message, on_notice,on_command
-from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import Message,MessageSegment
 from nonebot.params import CommandArg
+from nonebot import get_plugin_config
 from nonebot.adapters.onebot.v11 import (
     Event,
     Bot, GroupMessageEvent, GroupUploadNoticeEvent,PrivateMessageEvent
@@ -35,12 +35,10 @@ __plugin_meta__ = PluginMetadata(
 """
 配置初始化
 """
-config = nonebot.get_driver().config
+config = get_plugin_config(Config)
 destination_path=config.destination_path
-try:
-    admin_qq=config.admin_qq
-except:
-    admin_qq=[]
+admin_qq=config.admin_qq
+
 
 class ExpectSignal(Exception):
     """自定义异常类，用于发出 Expect 信号"""
@@ -99,17 +97,6 @@ def list_files_in_directory(directory_path):
     return files
 
 # 获取文件信息（根据id）
-def get_file_info(CQ_code: str) -> Optional[IDFile]:
-    match = re.search(r"CQ:([^,]+)", CQ_code)
-    if match:
-        CQ_type = match.group(1)
-        if CQ_type == "file":
-            file_name = re.search(r"file=([^,]+)", CQ_code).group(1)
-            file_id = re.search(r"file_id=([^,]+)", CQ_code).group(1)
-            file_size = re.search(r"file_size=(\d+)", CQ_code).group(1)
-            return IDFile(file_name=file_name, file_id=file_id, file_size=file_size)
-    return None
-
 
 # 判断是否为vpk
 def is_vpk_file(filename: str) -> bool:
@@ -118,9 +105,12 @@ def is_vpk_file(filename: str) -> bool:
 #下载文件并处理
 @get_file.handle()
 async def file_message_judge(event: Event, bot: Bot):
-    file_info = get_file_info(str(event.get_message()))
-    logger.info(event.message_id)
-    if file_info is not None and is_vpk_file(file_info.file_name):
+    file_info = event.get_message()[0].data
+    message_type=event.get_message()[0].type
+    # logger.info(message_type)
+    # logger.info(event.get_message()[0].data)
+    # logger.info(file_info["file"])
+    if message_type == "file"  and is_vpk_file(file_info["file"]):
         message_id = event.message_id
         msg_detail = await bot.call_api("get_msg", message_id=message_id)
         logger.info(msg_detail)
@@ -129,19 +119,19 @@ async def file_message_judge(event: Event, bot: Bot):
         if msg_detail["user_id"] not in admin_qq and len(admin_qq)!=0:
             await get_file.finish()
         addons_list=list_files_in_directory(destination_path)
-        if file_info.file_name in addons_list:
-            await bot.send(event, file_info.file_name+"已存在,输入/file查看已加载vpk文件")
+        if file_info["file"] in addons_list:
+            await bot.send(event, file_info["file"]+"已存在,输入/file查看已加载vpk文件")
             await get_file.finish()
         await bot.send(event,
-                       "已检测到" + file_info.file_name + "文件,开始下载,请稍等")
+                       "已检测到" + file_info["file"] + "文件,开始下载,请稍等")
         try:
-            url_info = await bot.call_api("get_group_file_url", file_id=file_info.file_id, group_id=group_id)
+            url_info = await bot.call_api("get_group_file_url", file_id=file_info["file_id"], group_id=group_id)
             logger.info("文件url:" + url_info["url"])
         except:
             logger.info("get url error")
-            await bot.send(event,"获取" + file_info.file_name + "url失败")
+            await bot.send(event,"获取" + file_info["file"] + "url失败")
             await get_file.finish()
-        await download_file(url_info["url"],event,bot,filename=file_info.file_name)
+        await download_file(url_info["url"],event,bot,filename=file_info["file"])
 
 
 #查询vpk
