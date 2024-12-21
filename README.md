@@ -1,7 +1,7 @@
 <div align="center">
-  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-addons-manager/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
+  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
   <br>
-  <p><img src="https://github.com/A-kirami/nonebot-plugin-addons-manager/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
+  <p><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
 </div>
 
 <div align="center">
@@ -12,7 +12,7 @@ _✨ 求生之路addons文件夹Q群管理插件 ✨_
 
 
 <a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/owner/nonebot-plugin-addons-manager.svg" alt="license">
+    <img src="https://img.shields.io/github/license/ScorMax/nonebot-plugin-addons-manager.svg" alt="license">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-addons-manager">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-addons-manager.svg" alt="pypi">
