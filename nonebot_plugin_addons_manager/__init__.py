@@ -18,8 +18,8 @@ from aiohttp import ClientTimeout
 from nonebot.plugin import PluginMetadata
 
 __plugin_meta__ = PluginMetadata(
-    name="addons_manager",
-    description="用来对v社游戏的addons文件夹进行vpk的管理，如求生之路",
+    name="求生之路addons文件管理",
+    description="用来对求生之路的addons文件夹进行管理，方便在QQ群中进行vpk文件的增删改查",
     usage="将vpk文件上传至群文件可以自动下载，/file可以查询已有vpk文件，/delete可以删除文件，/rename可以重命名文件",
 
     type="application",
