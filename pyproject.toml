@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-addons-manager"
-version = "0.1.1"
+version = "0.1.2"
 description = "nonebot plugin that can help manage addons folder in valve's game"
 authors = ["ScorMax <1335900872@qq.com>"]
 license = "GPL-3.0-only"
