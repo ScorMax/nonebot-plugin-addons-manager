@@ -16,6 +16,7 @@ import os
 import aiohttp
 from aiohttp import ClientTimeout
 from nonebot.plugin import PluginMetadata
+from nonebot.permission import SUPERUSER
 
 __plugin_meta__ = PluginMetadata(
     name="求生之路addons文件管理",
@@ -37,7 +38,7 @@ __plugin_meta__ = PluginMetadata(
 """
 config = get_plugin_config(Config)
 destination_path=config.destination_path
-admin_qq=config.admin_qq
+
 
 
 class ExpectSignal(Exception):
@@ -78,7 +79,7 @@ async def download_file(url,event,bot, filename=None):
 #捕获消息
 def message_rule(event: GroupMessageEvent):
     return isinstance(event, Event)
-get_file = on_message(rule=message_rule,block=False)
+get_file = on_message(rule=message_rule,block=False,permission=SUPERUSER)
 
 
 #返回文件夹下的所有文件
@@ -115,9 +116,6 @@ async def file_message_judge(event: Event, bot: Bot):
         msg_detail = await bot.call_api("get_msg", message_id=message_id)
         logger.info(msg_detail)
         group_id=msg_detail["group_id"]
-        #权限认证
-        if msg_detail["user_id"] not in admin_qq and len(admin_qq)!=0:
-            await get_file.finish()
         addons_list=list_files_in_directory(destination_path)
         if file_info["file"] in addons_list:
             await bot.send(event, file_info["file"]+"已存在,输入/file查看已加载vpk文件")
@@ -174,7 +172,7 @@ async def _():
     await find_vpk.finish(Message(mes+msg))
 
 #删除vpk
-delete = on_command("delete",block=False)
+delete = on_command("delete",block=False,permission=SUPERUSER)
 @delete.handle()
 async def delete_file(bot: Bot, event: Event, args: Message = CommandArg()):
     if not os.path.exists(destination_path):
@@ -182,8 +180,6 @@ async def delete_file(bot: Bot, event: Event, args: Message = CommandArg()):
         return
     message_id = event.message_id
     msg_detail = await bot.call_api("get_msg", message_id=message_id)
-    if msg_detail["user_id"] not in admin_qq and lem(admin_qq)!=0:
-        await delete.finish()
     files=list_files_in_directory(destination_path)
     filename=args.extract_plain_text()
     if filename in files:
@@ -194,7 +190,7 @@ async def delete_file(bot: Bot, event: Event, args: Message = CommandArg()):
         await bot.send(event, "无"+ filename + "文件，删除失败")
 
 #修改文件名
-rename = on_command("rename",block=False)
+rename = on_command("rename",block=False,permission=SUPERUSER)
 @rename.handle()
 async def rename_file(bot: Bot, event: Event, args: Message = CommandArg()):
     if not os.path.exists(destination_path):
@@ -202,8 +198,6 @@ async def rename_file(bot: Bot, event: Event, args: Message = CommandArg()):
         return
     message_id = event.message_id
     msg_detail = await bot.call_api("get_msg", message_id=message_id)
-    if msg_detail["user_id"] not in admin_qq:
-        await rename.finish()
     files=list_files_in_directory(destination_path)
     filenames=args.extract_plain_text().split(",")
     logger.info(filenames)
