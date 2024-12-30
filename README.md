@@ -49,6 +49,10 @@ _✨ 求生之路addons文件夹Q群管理插件 ✨_
    <p>NapCat官方文档</p>
 </a>
 
+5. <a href="https://blog.csdn.net/apple_51931783/article/details/128442806?ops_request_misc=&request_id=&biz_id=102&utm_term=nonebot%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-8-128442806.142^v100^pc_search_result_base7&spm=1018.2226.3001.4187">
+   <p>『Nonebot 插件编写教程』nonebot2处理消息的完整过程</p>
+</a>
+
 借鉴了一些下面两个插件的代码与思路：
 1. <a href="https://github.com/LiLuo-B/nonebot-plugin-valve-server-query">
    <p>nonebot-plugin-valve-server-query</p>
